@@ -21,7 +21,7 @@ function setup() {
 }
 
 function draw() {
-    // background(0);
+    background(0);
 
     fill(x, y, x);
     ellipse(5*x, 5*y, 60, 60);
