@@ -9,6 +9,8 @@ var y = 0;
 function preload() {
     // Loading settings.json file
     settings = loadJSON('./settings.json');
+    img = loadImage("orbit.png"); 
+
 }
 
 function setup() {
@@ -24,7 +26,10 @@ function draw() {
     background(0);
 
     fill(x, y, x);
-    ellipse(5*x, 5*y, 60, 60);
+    // image
+    // ellipse(5*x, 5*y, 60, 60);
+    
+    image(img, 5*x+25, 5*y+73, img.width/5, img.height/5);
 
     var posData = {
         x: x,
