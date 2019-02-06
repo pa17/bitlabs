@@ -71,10 +71,20 @@ io.sockets.on('connection', newConnection);
 // 
 
 // Initialise quaternions
-var q_min = new THREE.Quaternion(0.5, 0.5, 0.5, 0.5);
-var q_max = new THREE.Quaternion(0.449, 0.449, 0.449, 0.628);
-var q_rel = 0;
-var current_quat = 0;
+var q_min = new THREE.Quaternion();
+q_min.setFromAxisAngle( new THREE.Vector3( 1, 0, 0 ), Math.PI / 2);
+
+var q_max = new THREE.Quaternion();
+q_max.setFromAxisAngle( new THREE.Vector3( 0, 0, 1 ), Math.PI / 2);
+
+var relative_angle = q_min.angleTo(q_max);
+
+console.log("Relative angle betweem q_min and q_max. Rad: " + relative_angle + ", Deg: " + relative_angle * 180 / Math.PI);
+
+var current_quat = new THREE.Quaternion(0, 0, 0, 1);
+
+var q_rel = q_max.multiply(q_min.inverse());
+console.log("Relative quaternion: x: " + q_rel.x + ", y: " + q_rel.y + ", z: " + q_rel.z + ", w: " + q_rel.w);
 
 // Called when new client connection is made.
 function newConnection(socket) {
@@ -82,40 +92,32 @@ function newConnection(socket) {
 
     // Function handler - get activated when message of that type come in
     socket.on('position', posMsgHandler);
-    // socket.on('min_euler', minEulerHandler)
-    // socket.on('max_euler', maxEulerHandler)
-
-    if (q_min != 0 && q_max != 0) {
-      // Write new quaternion shtuff 
-      q_rel = q_max.multiply(q_min.inverse());
-      console.log("Rotation Axis: x: " + q_rel.x + ", y: " + q_rel.y + ", z: ", q_rel.z)
-      console.log("Theta Value: " + q_rel.w);
 
       var ref_axis = new THREE.Vector3(q_rel.x, q_rel.y, q_rel.z);
-    }
 
     function posMsgHandler(data) {
-        
+
         var rad = Math.PI / 180;
         var current_euler = new THREE.Euler(data['alpha'] * rad, data['beta'] * rad, data['gamma'] * rad, 'ZXY');
-        var current_quat = new THREE.Quaternion(0, 0, 0, 0);
         current_quat.setFromEuler(current_euler);
 
         if (current_quat.w > 0) {
-          //console.log("current_quat: " + current_quat);
+
+          // APPROACH 1: Swing Twist Decomp.
           //swingTwistDecomposition(current_quat, ref_axis);
 
-          relativeAngle(current_quat, q_rel)
+          // APPROACH 2: Relative Angles
+          console.log(" ");
+
+          console.log("Current Euler. Alpha:" + data['alpha'] + ", Beta: " + data['beta'] + ", Gamma:" + data['gamma']);
+          console.log("Relative angle: " + current_quat.angleTo(q_rel) * (180 / Math.PI));
         }
 
-        // This should only output one value (the mapped theta from the q_rel)
         // max.outlet(data['x'], data['y'], data['z']);
     }
 
     function relativeAngle(current_quat, q_rel){
-      console.log("current_quat: " + current_quat.x + ", " + current_quat.y + ", " + current_quat.z + ", " + current_quat.w);
-      console.log("q_rel: " + q_rel.x + ", " + q_rel.y + ", " + q_rel.z + ", " + q_rel.w);
-      console.log("Relative angle: " + current_quat.angleTo(q_rel));
+      
     }
 
     function swingTwistDecomposition(in_quat, ref_axis) {
@@ -136,16 +138,12 @@ function newConnection(socket) {
       //twist_euler.setFromQuaternion(twist);
 
       //console.log("Twist: " + twist);
-      
       //console.log("Twist Euler: " + twist_euler.x + ", " + twist_euler.y + ", " + twist_euler.z);
-
       //console.log(" Swing: " + swing);
 
 
     }
-
-
-
+    
     // function minEulerHandler(euler) {
     //   q_min = Quaternion.fromEuler(data["alpha"], data["beta"], data["gamma"], 'ZXY').normalize();
     // }

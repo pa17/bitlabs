@@ -42,23 +42,33 @@ function draw() {
 }
 
 function handleOrientation(event) {
-    beta = event.beta;  // In degree in the range [-180,180]
-    gamma = event.gamma; // In degree in the range [-90,90]
-    alpha = event.alpha; // In degree in the range [0, 360]
+    beta = event.beta;  // x In degree in the range [-180,180]
+    gamma = event.gamma; // y In degree in the range [-90,90]
+    alpha = event.alpha; // z In degree in the range [0, 360]
+
+    // Because we don't want to have the device upside down
+    // We constrain the x value to the range [-90,90]
+    //if (beta >  90) { beta =  90};
+    //if (beta < -90) { beta = -90};
+  
+    // To make computation easier we shift the range of 
+    // x and y to [0,180]
+    //beta += 90;
+    //gamma += 90;
 
 
     // x inits at 180 so that wraparound is when phone is upside down
-    beta += 180;
+    //beta += 180;
     // y inits at 90 so that wraparound is when phone stands on long edge
-    gamma += 90;
+    //gamma += 90;
     // z inits at 180 so that wraparound is when home button points away
-    if (alpha > 180) { alpha -= 360};
-    if (alpha < 180) { alpha += 180};
+    //if (alpha > 180) { alpha -= 360};
+    //if (alpha < 180) { alpha += 180};
 
     // Normalise all values
-    beta = beta / 360;
-    gamma = gamma / 180;
-    alpha = alpha / 360;
+    //beta = beta / 360;
+    //gamma = gamma / 180;
+    //alpha = alpha / 360;
   }
   
 window.addEventListener('deviceorientation', handleOrientation);
