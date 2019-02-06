@@ -7,8 +7,7 @@ const
     socket = require('socket.io'),
     os = require( 'os' ),
     fs = require('fs'),
-    path = require('path'),
-    THREE = require('three');
+    path = require('path');
 
 //
 //  SETUP
@@ -70,85 +69,68 @@ io.sockets.on('connection', newConnection);
 //  LOOPS
 // 
 
-// Initialise quaternions
-var q_min = new THREE.Quaternion();
-q_min.setFromAxisAngle( new THREE.Vector3( 1, 0, 0 ), Math.PI / 2);
-
-var q_max = new THREE.Quaternion();
-q_max.setFromAxisAngle( new THREE.Vector3( 0, 0, 1 ), Math.PI / 2);
-
-var relative_angle = q_min.angleTo(q_max);
-
-console.log("Relative angle betweem q_min and q_max. Rad: " + relative_angle + ", Deg: " + relative_angle * 180 / Math.PI);
-
-var current_quat = new THREE.Quaternion(0, 0, 0, 1);
-
-var q_rel = q_max.multiply(q_min.inverse());
-console.log("Relative quaternion: x: " + q_rel.x + ", y: " + q_rel.y + ", z: " + q_rel.z + ", w: " + q_rel.w);
-
 // Called when new client connection is made.
 function newConnection(socket) {
-    // max.post(`${socket.id}`);
+  // max.post(`${socket.id}`);
 
-    // Function handler - get activated when message of that type come in
-    socket.on('position', posMsgHandler);
+  socket.on('position', posMsgHandler);
+  socket.on('minAngle', minAngleMsgHandler);
+  socket.on('maxAngle', maxAngleMsgHandler);
 
-      var ref_axis = new THREE.Vector3(q_rel.x, q_rel.y, q_rel.z);
+  var minAngles = {
+    'beta': 150,
+    'gamma': 0,
+    'alpha': 0,
+  }
 
-    function posMsgHandler(data) {
+  var maxAngles = {
+    'beta': 210,
+    'gamma': 180,
+    'alpha': 360,
+  }
 
-        var rad = Math.PI / 180;
-        var current_euler = new THREE.Euler(data['alpha'] * rad, data['beta'] * rad, data['gamma'] * rad, 'ZXY');
-        current_quat.setFromEuler(current_euler);
+  var scaledAngles = {
+    'beta': 0,
+    'gamma': 0,
+    'alpha': 0,
+  }
 
-        if (current_quat.w > 0) {
+  function posMsgHandler(data) {
 
-          // APPROACH 1: Swing Twist Decomp.
-          //swingTwistDecomposition(current_quat, ref_axis);
+    // console.log(data);
 
-          // APPROACH 2: Relative Angles
-          console.log(" ");
-
-          console.log("Current Euler. Alpha:" + data['alpha'] + ", Beta: " + data['beta'] + ", Gamma:" + data['gamma']);
-          console.log("Relative angle: " + current_quat.angleTo(q_rel) * (180 / Math.PI));
-        }
-
-        // max.outlet(data['x'], data['y'], data['z']);
+    if (data['beta'] >=  minAngles['beta'] && data['beta'] <= maxAngles['beta']) {
+      console.log("Beta: " + data['beta'] + " Beta_MIN: " + minAngles['beta'] + ", Diff: " + Math.abs(data['beta'], minAngles['beta']));
+      scaledAngles['beta'] = Math.abs(data['beta'] - minAngles['beta']) / Math.abs(maxAngles['beta'] - minAngles['beta']);
     }
 
-    function relativeAngle(current_quat, q_rel){
-      
+    if (data['gamma'] >=  minAngles['gamma'] && data['gamma'] <= maxAngles['gamma']) {
+      scaledAngles['gamma'] = Math.abs(data['gamma'] - minAngles['gamma']) / Math.abs(maxAngles['gamma'] - minAngles['gamma']);
     }
 
-    function swingTwistDecomposition(in_quat, ref_axis) {
-      //console.log("in_quat: " + in_quat);
-      //console.log("ref_axis: " + ref_axis.x + ", " + ref_axis.y + ", " + ref_axis.z);
-
-      //var rotation_axis = new THREE.Vector3(in_quat.x, in_quat.y, in_quat.z); // rotation axis
-      //console.log("rotation_axis: " + rotation_axis.x + ", " + rotation_axis.y + ", " + rotation_axis.z);
-      
-      //var projection = rotation_axis.projectOnVector(ref_axis);
-      console.log("Projection: ", projection);
-
-      //var twist = new THREE.Quaternion(projection.x, projection.y, projection.z, in_quat.w);
-      //twist.normalize();
-
-      //var swing = in_quat.multiply(twist.conjugate());
-      //var twist_euler = new THREE.Euler;
-      //twist_euler.setFromQuaternion(twist);
-
-      //console.log("Twist: " + twist);
-      //console.log("Twist Euler: " + twist_euler.x + ", " + twist_euler.y + ", " + twist_euler.z);
-      //console.log(" Swing: " + swing);
-
-
+    if (data['alpha'] >=  minAngles['alpha'] && data['alpha'] <= maxAngles['alpha']) {
+      scaledAngles['alpha'] = Math.abs(data['alpha'] - minAngles['alpha']) / Math.abs(maxAngles['alpha'] - minAngles['alpha']);
     }
-    
-    // function minEulerHandler(euler) {
-    //   q_min = Quaternion.fromEuler(data["alpha"], data["beta"], data["gamma"], 'ZXY').normalize();
-    // }
 
-    // function maxEulerHandler(data) {
-    //   q_max = Quaternion.fromEuler(data["alpha"], data["beta"], data["gamma"], 'ZXY').normalize();
-    // }
+    console.log(scaledAngles);
+    // max.outlet(scaledAngles['beta'], scaledAngles['gamma'], scaledAngles['alpha']);
+  }
+
+  function minAngleMsgHandler(data) {
+
+    var minAngles = {
+      'beta': data['beta'],
+      'gamma': data['gamma'],
+      'alpha': data['alpha'],
+    }
+  }
+
+  function maxAngleMsgHandler(data) {
+
+    var maxAngles = {
+      'beta': data['beta'],
+      'gamma': data['gamma'],
+      'alpha': data['alpha'],
+    }
+  }
 }
