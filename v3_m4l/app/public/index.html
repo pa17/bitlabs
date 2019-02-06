@@ -21,10 +21,41 @@
             font-size: 16px;
             text-align: center;
         }
+
+        .button {
+            background-color: white;
+            border: none;
+            text-align: center;
+            font-size: 60px;
+            padding: 40px 60px;
+            align-self: auto;
+        }
+
+        .button:active {
+            box-shadow: 0 5px #666;
+            transform: translateY(10px);
+        }
+
+        
     </style>
-    <body>Augmented Instruments</body>
-        <!-- <img src="logo.png" alt="img02" style="position: absolute; top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%, -50%)" id="toplogo"> -->
-    <!-- <style type="text/css">
+    <h3>BitLabs</h3>
+
+<body>
+
+    <button class="button" onclick="setMinAngle()">FROM</button>
+    <button class="button" onclick="setMaxAngle()">TO</button>
+</body>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
+<script type="text/javascript" src="./sketch.js"></script>
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+</head>
+
+</html>
+
+
+<!-- <img src="logo.png" alt="img02" style="position: absolute; top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%, -50%)" id="toplogo"> -->
+<!-- <style type="text/css">
         body {
             margin: 0;
             padding: 0;
@@ -55,9 +86,3 @@
             display: none;
         }
     </style> -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
-    <script type="text/javascript" src="./sketch.js"></script>
-    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-</head>
-
-</html>
