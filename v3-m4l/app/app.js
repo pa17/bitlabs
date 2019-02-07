@@ -2,12 +2,12 @@
 
 // Importing npm modules.
 const 
-    max = require('max-api'),
     express = require('express'),
     socket = require('socket.io'),
     os = require( 'os' ),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    max = require('max-api');
 
 //
 //  SETUP
@@ -69,7 +69,17 @@ io.sockets.on('connection', newConnection);
 //  LOOPS
 // 
 
-var minAngles, maxAngles
+var minAngles = {
+  'beta': 0,
+  'gamma': 0,
+  'alpha': 0,
+}
+var maxAngles= {
+  'beta': 360,
+  'gamma': 180,
+  'alpha': 360,
+}
+
 var scaledAngles = {
   'beta': 0,
   'gamma': 0,
@@ -78,6 +88,7 @@ var scaledAngles = {
 
 // Called when new client connection is made.
 function newConnection(socket) {
+  
   max.post(`${socket.id}`);
 
   socket.on('position', posMsgHandler);
@@ -87,41 +98,50 @@ function newConnection(socket) {
   function posMsgHandler(data) {
 
     if (minAngles != undefined && maxAngles != undefined) {
-      //console.log(minAngles);
-      //console.log(maxAngles);
-      
-      if (data['beta'] >=  minAngles['beta'] && data['beta'] <= maxAngles['beta']) {
+
+      if (data['beta'] >=  minAngles['beta'] && data['beta'] <= maxAngles['beta'] && maxAngles['beta'] > minAngles['beta']) {
+        scaledAngles['beta'] = Math.abs(data['beta'] - minAngles['beta']) / Math.abs(maxAngles['beta'] - minAngles['beta']);
+      }
+      else if (data['beta'] >=  maxAngles['beta'] && data['beta'] <= minAngles['beta'] && minAngles['beta'] > maxAngles['beta']) {
         scaledAngles['beta'] = Math.abs(data['beta'] - minAngles['beta']) / Math.abs(maxAngles['beta'] - minAngles['beta']);
       }
 
-      if (data['gamma'] >=  minAngles['gamma'] && data['gamma'] <= maxAngles['gamma']) {
+      if (data['gamma'] >=  minAngles['gamma'] && data['gamma'] <= maxAngles['gamma'] && maxAngles['gamma'] > minAngles['gamma']) {
+        scaledAngles['gamma'] = Math.abs(data['gamma'] - minAngles['gamma']) / Math.abs(maxAngles['gamma'] - minAngles['gamma']);
+      }
+      else if (data['gamma'] >=  maxAngles['gamma'] && data['gamma'] <= minAngles['gamma'] && minAngles['gamma'] > maxAngles['gamma']) {
         scaledAngles['gamma'] = Math.abs(data['gamma'] - minAngles['gamma']) / Math.abs(maxAngles['gamma'] - minAngles['gamma']);
       }
 
-      if (data['alpha'] >=  minAngles['alpha'] && data['alpha'] <= maxAngles['alpha']) {
+      if (data['alpha'] >=  minAngles['alpha'] && data['alpha'] <= maxAngles['alpha'] && maxAngles['alpha'] > minAngles['alpha']) {
         scaledAngles['alpha'] = Math.abs(data['alpha'] - minAngles['alpha']) / Math.abs(maxAngles['alpha'] - minAngles['alpha']);
       }
-
-      console.log(" ");
-      console.log(scaledAngles);
+      else if (data['alpha'] >=  maxAngles['alpha'] && data['alpha'] <= minAngles['alpha'] && minAngles['alpha'] > maxAngles['alpha']) {
+        scaledAngles['alpha'] = Math.abs(data['alpha'] - minAngles['alpha']) / Math.abs(maxAngles['alpha'] - minAngles['alpha']);
+      }
     }
 
     max.outlet(scaledAngles['beta'], scaledAngles['gamma'], scaledAngles['alpha']);
+
+    // console.log(" ");
+    // console.log(minAngles);
+    // console.log(maxAngles);
+    // console.log(scaledAngles);
   }
 
   function minAngleMsgHandler(data) {
 
-    minAngles = data
-    console.log(" ");
-    console.log("Min Angles Message received. ");
-    console.log(minAngles);
+    minAngles[data['axis']] = data['value']
+    // console.log(" ");
+    // console.log("Min Angles Message received. ");
+    // console.log(minAngles);
   }
 
   function maxAngleMsgHandler(data) {
 
-    maxAngles = data
-    console.log(" ");
-    console.log("Max Angles Message received. ");
-    console.log(maxAngles);
+    maxAngles[data['axis']] = data['value']
+    // console.log(" ");
+    // console.log("Max Angles Message received. ");
+    // console.log(maxAngles);
   }
 }

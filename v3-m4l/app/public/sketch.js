@@ -58,17 +58,23 @@ function handleOrientation(event) {
 window.addEventListener('deviceorientation', handleOrientation);
 
 
-function setMinAngle()
+function setMinAngle(axis)
 {
     minAngle = {
-        'beta':beta,
-        'gamma':gamma,
-        'alpha':alpha,
+        'beta': beta,
+        'gamma': gamma,
+        'alpha': alpha,
     }
-    socket.emit('minAngle', minAngle)
+
+    minAngleMsg = {
+        'axis': axis,
+        'value': minAngle[axis],
+    }
+
+    socket.emit('minAngle', minAngleMsg)
 }
 
-function setMaxAngle()
+function setMaxAngle(axis)
 {
     maxAngle = {
         'beta':beta,
@@ -76,5 +82,10 @@ function setMaxAngle()
         'alpha':alpha,
     }
 
-    socket.emit('maxAngle', maxAngle)
+    maxAngleMsg = {
+        'axis': axis,
+        'value': maxAngle[axis],
+    }
+
+    socket.emit('maxAngle', maxAngleMsg)
 }
