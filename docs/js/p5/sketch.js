@@ -7,8 +7,17 @@ function windowResized() {
 }
 
 function mouseWheel(e) {
+
     windowY += e.deltaY;
-    if (windowY < 0) { windowY = 0; }
+
+    if (windowY > 6000) {
+        windowY = 3000;
+    }
+
+    else if (windowY < 0) { 
+        windowY = 0; 
+    }
+
     vas.position(0, windowY);
     print (windowY);
 }
@@ -31,7 +40,7 @@ function draw() {
 
     if (windowY > 400) {
         fill(255, 0, 255);
-        ellipse(800, 400, windowY/2, windowY/2)
+        ellipse(400+windowY/5, 400, windowY/2, windowY/2)
     }
 }
 
