@@ -1,4 +1,4 @@
-Rubik/*!
+/*!
  * Start Bootstrap - Grayscale v5.0.3 (https://startbootstrap.com/template-overviews/grayscale)
  * Copyright 2013-2018 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-grayscale/blob/master/LICENSE)
@@ -168,8 +168,7 @@ Rubik/*!
 
 .about-section {
   padding-top: 10rem;
-  background: -webkit-gradient(linear, left top, left bottom, from(#161616), color-stop(75%, rgba(22, 22, 22, 0.9)), to(rgba(22, 22, 22, 0.8)));
-  background: linear-gradient(to bottom, #161616 0%, rgba(22, 22, 22, 0.9) 75%, rgba(22, 22, 22, 0.8) 100%);
+  background: #172322;
 }
 
 .about-section p {
@@ -191,8 +190,12 @@ Rubik/*!
 @media (min-width: 992px) {
   .projects-section .featured-text {
     padding: 0 0 0 2rem;
-    border-left: 0.5rem solid #64a19d;
+    border-left: 0.5rem solid #ff00ff;
   }
+}
+
+.featured-testimonial {
+  border-left: 0.5rem solid #00ffff;
 }
 
 .projects-section .project-text {
@@ -205,7 +208,7 @@ Rubik/*!
     padding: 5rem;
   }
   .projects-section .project-text hr {
-    border-color: #64a19d;
+    border-color: #ffff00;
     border-width: .25rem;
     width: 30%;
   }
@@ -277,9 +280,14 @@ Rubik/*!
   color: #fff;
 }
 
+.headshot {
+  width: 75%;
+}
+
 body {
-  font-family: 'Nunito';
+  font-family: 'Rubik';
   letter-spacing: 0.0625em;
+  background-color: #172322;
 }
 
 a {
@@ -292,7 +300,7 @@ a:focus, a:hover {
 }
 
 .bg-black {
-  background-color: #161616 !important;
+  background-color: #172322 !important;
 }
 
 .bg-primary {
@@ -306,3 +314,4 @@ a:focus, a:hover {
 footer {
   padding: 5rem 0;
 }
+
