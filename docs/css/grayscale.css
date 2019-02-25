@@ -168,7 +168,7 @@
 
 .about-section {
   padding-top: 10rem;
-  background: #172322;
+  background:none;
 }
 
 .about-section p {
@@ -281,13 +281,13 @@
 }
 
 .headshot {
-  width: 75%;
+  width: 50%;
 }
 
 body {
   font-family: 'Rubik';
   letter-spacing: 0.0625em;
-  background-color: #172322;
+  background-color: none;
 }
 
 a {
@@ -300,7 +300,7 @@ a:focus, a:hover {
 }
 
 .bg-black {
-  background-color: #172322 !important;
+  background-color: none !important;
 }
 
 .bg-primary {

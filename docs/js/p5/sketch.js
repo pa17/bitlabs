@@ -5,17 +5,14 @@ var speed;
 
 function setup() {
     windowY = 0;
-    vas = createCanvas(windowWidth, 2*windowHeight);
-    vas.position(0, 0);
-    vas.style('z-index', '-1');
-    background(0);
-
+    vas = createCanvas(windowWidth, windowHeight);
+    vas.parent('sketch-holder');
     noStroke();
 
     star = new Star();
   
     // Create an array of 1600 star objects
-    for (var i = 0; i < 200; i++) {
+    for (var i = 0; i < 100; i++) {
       	stars[i] = new Star();
     }
 }
@@ -25,11 +22,6 @@ function draw() {
 
     fill(255, 255, 0);
     rect(200, 300, windowY, windowY);
-
-    if (windowY > 400) {
-        fill(255, 0, 255);
-        ellipse(400+windowY/5, 400, windowY/2, windowY/2)
-    }
 
     speed = map(0.5, 0, width, 5, 30);
     background(0);
