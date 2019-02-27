@@ -17,8 +17,3 @@ function passWord() {
         history.go(-1);
     return " ";
 } 
-
-function insta()
-{
-     location.href = "https://www.instagram.com/bitlabs.orbit/";
-} 
