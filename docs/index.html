@@ -13,6 +13,7 @@
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- Custom fonts for this template -->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -316,7 +317,7 @@
   <!-- Signup Section -->
   <section id="signup" class="signup-section">
     <div class="container text-white">
-      <div class="row" style="margin-top: -5rem;">
+      <div class="row" style="margin-top: -8rem;">
         <div class="col-md-10 col-lg-8 mx-auto text-center">
           <!-- Begin Mailchimp Signup Form -->
           <div id="mc_embed_signup">
@@ -326,20 +327,36 @@
               target="_blank" novalidate>
               <div id="mc_embed_signup_scroll">
                 <h2 class="text-white mb-4">Join the OrBit!</h2>
-                <p class="text-white-75">BitLabs is currently developing OrBit and we are looking for support from you.
-                  Whether you are a musician, developer or investor, we would love to hear from you. BitLabs is always
-                  on the lookout for beta testers and people who share our vision. Sign up to our newsletter below or
-                  contact us directly at <a href="mailto: hello@bitlabs.uk">hello@bitlabs.uk</a> with feedback or
-                  inquiries.</p>
+                <div class="row">
+                    <p class="text-white-75 mx-auto">BitLabs is currently developing OrBit and we are looking for support from <em>you</em></p>.
+                    <br>
+                    <br>
+                    <br>
+
+                      </p>
+                    <div class="col-xl-6">
+                    <h4 class="text-white-75 mx-auto">You are a musician</h4>
+                    <p class="text-white-75 mx-auto">We are always on the lookout for beta testers, feedback, and people who share our vision. Subscribe to our newsletter and listen to our story on Instagram.</p>
+                    <button style="background: #00ffff; border-radius: 50%; width: 5rem; height: 5rem;" type="button" class="btn btn-ins" onClick="insta()"><i class="fab fa-instagram" ></i></button>
+
+                    </div>
+                    <div class="col-xl-6">
+                      <h4 class="text-white-75 mx-auto">You are an investor</h4>
+                        <p class="text-white-75 mx-auto">Contact us directly at <a style="color: #00ffff" href="mailto: hello@bitlabs.uk">hello@bitlabs.uk</a> for
+                          inquiries. We have prepared a password-protected investor information pack including the current state of our product and business development process, which you can access upon request. </p>
+                    </div>
+                  </div>
+                  
                 <div class="mc-field-group">
                   </label>
                   <form class="form-inline d-flex">
                     <input style="margin-top: 3rem;" type="email"
                       class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0 required email" id="mce-EMAIL"
                       placeholder="Enter email address..." name="EMAIL">
-                    <button style="margin-top: 3rem;" type="submit" name="subscribe" id="mc-embedded-subscribe"
+                    <button style="margin-top: 1rem;" type="submit" name="subscribe" id="mc-embedded-subscribe"
                       class="btn btn-primary mx-auto">Subscribe</button>
                   </form>
+                </div>
                 </div>
                 <div id="mce-responses" class="clear">
                   <div class="response" id="mce-error-response" style="display:none"></div>
