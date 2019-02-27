@@ -4,9 +4,9 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-grayscale/blob/master/LICENSE)
  */
 
-#mainNav {
+ #mainNav {
   min-height: 56px;
-  background-color: rgba(255, 255, 255,0);
+  background-color: #fff;
 }
 
 #mainNav .navbar-toggler {
