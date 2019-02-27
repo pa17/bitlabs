@@ -318,3 +318,7 @@ footer {
 body {
   background-color: black;
 }
+
+.text-white-75 {
+  color: rgba(255, 255, 255, 0.80) !important;
+}
