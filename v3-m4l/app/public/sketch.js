@@ -7,6 +7,18 @@ var beta = 0;
 var gamma = 0;
 var alpha = 0;
 
+minAngle = {
+    'beta': 0,
+    'gamma': 0,
+    'alpha': 0,
+}
+
+maxAngle = {
+    'beta': 90,
+    'gamma': 90,
+    'alpha': 90,
+}
+
 function preload() {
     // Loading settings.json file
     settings = loadJSON('./settings.json');
@@ -14,7 +26,8 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    canvas = createCanvas(windowWidth, windowHeight);
+    canvas.parent('sketch-holder');
     background(0);
 
     pos = createVector(width / 2, height / 2);
@@ -24,12 +37,27 @@ function setup() {
 
 function draw() {
     // background(255-255*x,255-255*y,255*z-255);
+    background(0);
 
     fill(255*alpha, 255*beta, 255*gamma);
 
     // image
     ellipse(windowWidth*gamma, windowHeight*beta, 60, 60);
+
+    fill(255, 255, 0, 255);
+    rect(40, 100, windowWidth*beta/360, 20);
+    fill(255, 255, 255, 255);
+    rect(40, 100, windowWidth*minAngle['beta']/360, 20);
+    rect(40, 100, windowWidth*minAngle['beta']/360, 20);
+
+
+    fill(255, 0, 255, 255);
+    rect(40, 140, windowWidth*gamma/180, 20);
     
+    fill(0, 255, 255, 255);
+    rect(40, 180, windowWidth*alpha/360, 20);
+
+
     // image(img, 5*x+25, 5*y+73, img.width/5, img.height/5);
 
     var posData = {

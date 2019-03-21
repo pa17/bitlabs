@@ -22,6 +22,10 @@
             text-align: center;
         }
 
+        h3 {
+            margin-top: 5rem;
+        }
+
         .button {
             background-color: white;
             border: none;
@@ -38,8 +42,10 @@
   
     </style>
     <h3>BitLabs</h3>
+</head>
 
 <body>
+
 
     <button class="button" onclick="setMinAngle('beta')">Pitch MIN</button>
     <button class="button" onclick="setMaxAngle('beta')">Pitch MAX</button>
@@ -47,6 +53,16 @@
     <button class="button" onclick="setMaxAngle('gamma')">Roll MAX</button>
     <button class="button" onclick="setMinAngle('alpha')">Yaw MIN</button>
     <button class="button" onclick="setMaxAngle('alpha')">Yaw MAX</button>
+
+    <h3>Pitch</h3>
+    <h3>Roll</h3>
+    <h3>Yaw</h3>
+
+    <div style="position: fixed" id='sketch-holder'>
+    </div>
+
+
+
 </body>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
