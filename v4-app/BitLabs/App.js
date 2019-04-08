@@ -1,10 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Accelerometer } from 'expo';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 
-export default class AccelerometerSensor extends React.Component {
+import { DangerZone } from 'expo';
+const { DeviceMotion } = DangerZone;
+
+let alpha, beta, gamma = 0;
+
+export default class DeviceMotionSensor extends React.Component {
   state = {
-    accelerometerData: {},
+    deviceMotionData: {},
   };
 
   componentDidMount() {
@@ -24,19 +28,19 @@ export default class AccelerometerSensor extends React.Component {
   };
 
   _slow = () => {
-    Accelerometer.setUpdateInterval(1000); 
+    DeviceMotion.setUpdateInterval(500); 
+    console.log("Setting Update Interval to 1000");
   };
 
   _fast = () => {
-    Accelerometer.setUpdateInterval(
-      16
-    ); 
+    DeviceMotion.setUpdateInterval(16); 
+    console.log("Setting Update Interval to 16");
   };
 
   _subscribe = () => {
-    this._subscription = Accelerometer.addListener(
-      accelerometerData => {
-        this.setState({ accelerometerData });
+    this._subscription = DeviceMotion.addListener(
+      deviceMotionData => {
+        this.setState({ deviceMotionData });
       }
     ); 
   };
@@ -47,41 +51,49 @@ export default class AccelerometerSensor extends React.Component {
   };
 
   render() {
-    let {
-      x,
-      y,
-      z,
-    } = this.state.accelerometerData; 
+    let rotationData = this.state.deviceMotionData.rotation;
+
+    if (rotationData != null){
+      alpha = rotationData.alpha;
+      beta = rotationData.beta;
+      gamma = rotationData.gamma;
+    }
 
     return (
-      <View style={styles.sensor}>
-        <Text>Accelerometer:</Text>
-        <Text>
-          x: {round(x)} y: {round(y)} z: {round(z)}
-        </Text>
+      <View style={styles.background}>
+        <View style={styles.body}>
+          <Text style={styles.text}>Device Motion:</Text>
+          <Text style={styles.text}>
+            Alpha: {toDeg(alpha)} Beta: {toDeg(beta)} Gamma: {toDeg(gamma)}
+          </Text>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this._toggle} style={styles.button}>
-            <Text>Toggle</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._slow} style={[styles.button, styles.middleButton]}>
-            <Text>Slow</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._fast} style={styles.button}>
-            <Text>Fast</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={this._toggle} style={styles.button}>
+              <Text>Toggle</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._slow} style={[styles.button, styles.middleButton]}>
+              <Text>Slow</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._fast} style={styles.button}>
+              <Text>Fast</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.logoContainer}>
+            <Image source={require('./img/logo.png')} />
+          </View>
         </View>
       </View>
     );
   }
 }
 
-function round(n) {
+function toDeg(n) {
   if (!n) {
     return 0;
   }
 
-  return Math.floor(n * 100) / 100;
+  return Math.floor(n * 180.0 / Math.PI);
 }
 
 const styles = StyleSheet.create({
@@ -93,20 +105,32 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     marginTop: 15,
   },
+  background: {
+    flex: 1,
+    backgroundColor: '#38424a',
+  },
+  body: {
+    marginTop: 35,
+    paddingHorizontal: 10,
+  },
   button: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eee',
+    backgroundColor: 'white',
     padding: 10,
+  },
+  logoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
   },
   middleButton: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderColor: '#ccc',
   },
-  sensor: {
-    marginTop: 15,
-    paddingHorizontal: 10,
-  },
+  text: {
+    color: 'white',
+  }
 });
