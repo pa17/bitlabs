@@ -1,10 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions } from 'react-native';
 
-import { DangerZone } from 'expo';
+import { DangerZone, Svg } from 'expo';
 const { DeviceMotion } = DangerZone;
+const { Circle, Rect } = Svg;
 
 let alpha, beta, gamma = 0;
+
+let deviceWidth = Dimensions.get('window').width;
+let deviceHeight = Dimensions.get('window').height;
 
 export default class DeviceMotionSensor extends React.Component {
   state = {
@@ -79,10 +83,22 @@ export default class DeviceMotionSensor extends React.Component {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.logoContainer}>
+          {/* <View style={styles.logoContainer}>
             <Image source={require('./img/logo.png')} />
-          </View>
+          </View> */}
         </View>
+        <Svg
+          height="100%"
+          width="100%"
+        >
+          <Circle
+            cx={toDeg(gamma) + deviceWidth/2}
+            cy={toDeg(beta) + 200}
+            r="20"
+            fill="pink"
+            onPress={() => alert('Press on Circle')}
+          />
+        </Svg>
       </View>
     );
   }
