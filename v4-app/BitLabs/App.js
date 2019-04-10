@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions } from 'rea
 
 import { DangerZone, Svg } from 'expo';
 const { DeviceMotion } = DangerZone;
-const { Circle, Rect } = Svg;
+const { Circle, Rect, G } = Svg;
 
 let alpha, beta, gamma = 0;
 
@@ -90,14 +90,37 @@ export default class DeviceMotionSensor extends React.Component {
         <Svg
           height="100%"
           width="100%"
-        >
+             >
           <Circle
             cx={toDeg(gamma) + deviceWidth/2}
-            cy={toDeg(beta) + 200}
+            cy={toDeg(beta) + 100}
             r="20"
             fill="pink"
             onPress={() => alert('Press on Circle')}
           />
+
+          <G
+            transform="translate(-260.5,-216.2)"
+          >
+            <G
+              scale="0.3"
+              rotation={toDeg(alpha)}
+              origin="416.99" 
+              originY="432.4"
+            >
+              <Circle class="cls-1" cx="407.47" cy="57.08" r="57.08"/>
+              <Circle class="cls-1" cx="188.68" cy="134.35" r="57.08"/>
+              <Circle class="cls-1" cx="57.09" cy="325.47" r="57.08"/>
+              <Circle class="cls-1" cx="62.97" cy="557.43" r="57.08"/>
+              <Circle class="cls-1" cx="204.07" cy="741.64" r="57.08"/>
+              <Circle class="cls-1" cx="426.5" cy="807.73" r="57.08"/>
+              <Circle class="cls-1" cx="645.29" cy="730.45" r="57.08"/>
+              <Circle class="cls-1" cx="776.88" cy="539.34" r="57.08"/>
+              <Circle class="cls-1" cx="771" cy="307.37" r="57.08"/>
+              <Circle class="cls-1" cx="629.9" cy="123.17" r="57.08"/>
+              <Circle class="cls-1" cx="416.99" cy="432.4" r="200.63" onPress={() => alert('Toggle effect!')}/>
+            </G>
+          </G>
         </Svg>
       </View>
     );
