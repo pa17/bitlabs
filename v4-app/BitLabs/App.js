@@ -7,13 +7,28 @@ const { Circle, Rect, G } = Svg;
 
 let alpha, beta, gamma = 0;
 
+let smallRadius = 57;
+let bigRadius = 200;
+
 let deviceWidth = Dimensions.get('window').width;
 let deviceHeight = Dimensions.get('window').height;
 
 export default class DeviceMotionSensor extends React.Component {
   state = {
     deviceMotionData: {},
+    effectSelect: [false, false, false, false, false, false, false, false, false, false],
+    effectToggle: false
   };
+
+  selectEffect = (index) => {
+    let buttonsActive = [false, false, false, false, false, false, false, false, false, false];
+    buttonsActive[index] = true;
+    this.setState({effectSelect: buttonsActive});
+  }
+
+  toggleEffect = () => {
+    this.setState({effectToggle: !this.state.effectToggle});
+  }
 
   componentDidMount() {
     this._toggle();
@@ -86,41 +101,60 @@ export default class DeviceMotionSensor extends React.Component {
           {/* <View style={styles.logoContainer}>
             <Image source={require('./img/logo.png')} />
           </View> */}
+
         </View>
         <Svg
           height="100%"
           width="100%"
              >
-          <Circle
+          {/*<Circle
             cx={toDeg(gamma) + deviceWidth/2}
             cy={toDeg(beta) + 100}
             r="20"
             fill="pink"
             onPress={() => alert('Press on Circle')}
-          />
-
-          <G
-            transform="translate(-260.5,-216.2)"
-          >
+          /> */}
+          
             <G
               scale="0.3"
-              rotation={toDeg(alpha)}
-              origin="416.99" 
-              originY="432.4"
+              transform="translate(125,200)"
             >
-              <Circle class="cls-1" cx="407.47" cy="57.08" r="57.08"/>
-              <Circle class="cls-1" cx="188.68" cy="134.35" r="57.08"/>
-              <Circle class="cls-1" cx="57.09" cy="325.47" r="57.08"/>
-              <Circle class="cls-1" cx="62.97" cy="557.43" r="57.08"/>
-              <Circle class="cls-1" cx="204.07" cy="741.64" r="57.08"/>
-              <Circle class="cls-1" cx="426.5" cy="807.73" r="57.08"/>
-              <Circle class="cls-1" cx="645.29" cy="730.45" r="57.08"/>
-              <Circle class="cls-1" cx="776.88" cy="539.34" r="57.08"/>
-              <Circle class="cls-1" cx="771" cy="307.37" r="57.08"/>
-              <Circle class="cls-1" cx="629.9" cy="123.17" r="57.08"/>
-              <Circle class="cls-1" cx="416.99" cy="432.4" r="200.63" onPress={() => alert('Toggle effect!')}/>
+              <Circle cx="407.47" cy="57.08" r={smallRadius}
+                fill={this.state.effectSelect[0] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(0)}/>
+              <Circle cx="188.68" cy="134.35" r={smallRadius}
+                fill={this.state.effectSelect[1] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(1)}/>
+              <Circle cx="57.09" cy="325.47" r={smallRadius}
+                fill={this.state.effectSelect[2] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(2)}/>
+              <Circle cx="62.97" cy="557.43" r={smallRadius}
+                fill={this.state.effectSelect[3] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(3)}/>
+              <Circle cx="204.07" cy="741.64" r={smallRadius}
+                fill={this.state.effectSelect[4] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(4)}/>
+              <Circle cx="426.5" cy="807.73" r={smallRadius}
+                fill={this.state.effectSelect[5] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(5)}/>
+              <Circle cx="645.29" cy="730.45" r={smallRadius}
+                fill={this.state.effectSelect[6] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(6)}/>
+              <Circle cx="776.88" cy="539.34" r={smallRadius}
+                fill={this.state.effectSelect[7] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(7)}/>
+              <Circle cx="771" cy="307.37" r={smallRadius}
+                fill={this.state.effectSelect[8] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(8)}/>
+              <Circle cx="629.9" cy="123.17" r={smallRadius}
+                fill={this.state.effectSelect[9] ? 'pink' : 'lightsteelblue'} 
+                onPress={() => this.selectEffect(9)}/>
+              <Circle cx="416.99" cy="432.4" r={bigRadius}
+                fill={this.state.effectToggle ? 'salmon' : 'seashell'} 
+                onPress={() => this.toggleEffect()}
+                onLongPress={() => alert('Long press on Rect')}
+              />
             </G>
-          </G>
         </Svg>
       </View>
     );
