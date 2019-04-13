@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 
 import { DangerZone, Svg } from 'expo';
 const { DeviceMotion } = DangerZone;
@@ -10,7 +10,6 @@ const { Circle, Rect, G, Mask } = Svg;
 let smallRadius = 57;
 let bigRadius = 200;
 
-let alpha, beta, gamma, alphaScaled, betaScaled, gammaScaled  = 0;
 let minAngles, maxAngles, scaledAngles = {
   alpha: 0,
   beta: 0,
@@ -25,7 +24,9 @@ export default class DeviceMotionSensor extends React.Component {
     axisSelect: 'X',
     deviceMotionData: {},
     effectSelect: [false, false, false, false, false, false, false, false, false, false],
-    effectToggle: false
+    effectToggle: false,
+    xActive: false,
+    yActive: false
   };
 
   _selectEffect = (index) => {
@@ -35,13 +36,24 @@ export default class DeviceMotionSensor extends React.Component {
   }
 
   _toggleEffect = () => {
-    this.setState({effectToggle: !this.state.effectToggle});
     // TODO: Implement functionality of effect toggling -> Show the angles achieved, get ready to be sent
+    // console.log("Axis Select: " + this.state.axisSelect + ", Effect Toggle: " + this.state.effectToggle);
+    if (this.state.axisSelect === 'X' && !this.state.effectToggle) {
+      this.setState({xActive: true, yActive: false})
+    }
+    else if (this.state.axisSelect === 'Y' && !this.state.effectToggle) {
+      this.setState({xActive: false, yActive: true})
+    }
+    else {
+      this.setState({xActive: false, yActive: false})
+    }
+
+    this.setState({effectToggle: !this.state.effectToggle});
   }
 
   componentDidMount() {
     this._toggle();
-    DeviceMotion.setUpdateInterval(16); 
+    DeviceMotion.setUpdateInterval(50); 
   }
 
   componentWillUnmount() {
@@ -89,29 +101,19 @@ export default class DeviceMotionSensor extends React.Component {
   };
 
   render() {
-    let rotationData = this.state.deviceMotionData.rotation;
-
-    if (rotationData != null){
-      alpha = rotationData.alpha;
-      beta = rotationData.beta;
-      gamma = rotationData.gamma;
-
-      let scaledRotationData = scaleAngles(this.state.deviceMotionData.rotation);
-
-      alphaScaled = scaledRotationData.alpha;
-      betaScaled = scaledRotationData.beta;
-      gammaScaled = scaledRotationData.gamma;
+    if (this.state.deviceMotionData.rotation != null){
+      scaleAngles(this.state.deviceMotionData.rotation);
     }
 
     return (
       <View style={styles.background}>
         <View style={styles.body}>
           <Text style={styles.text}>Device Motion:</Text>
-          <Text style={styles.text}>
+          {/* <Text style={styles.text}>
             Alpha: {toDeg(alpha)} Beta: {toDeg(beta)} Gamma: {toDeg(gamma)}
-          </Text>
+          </Text> */}
           <Text style={styles.text}>
-            S.Alpha: {toTwoDec(alphaScaled)} S.Beta: {toTwoDec(betaScaled)} S.Gamma: {toTwoDec(gammaScaled)}
+            S.Alpha: {toTwoDec(scaledAngles.alpha)} S.Beta: {toTwoDec(scaledAngles.beta)} S.Gamma: {toTwoDec(scaledAngles.gamma)}
           </Text>
 
           <View style={styles.buttonContainer}>
@@ -157,22 +159,20 @@ export default class DeviceMotionSensor extends React.Component {
               <Rect
                 x="0"
                 y="0"
-                width={this.state.axisSelect === 'X' ? '0' : deviceWidth * gammaScaled}
+                width={this.state.yActive ? deviceWidth * scaledAngles.gamma : '0'}
                 height="400"
                 fill="white"
-                fillOpacity="0.2"
                 mask="url(#Mask)"
               />
 
-              {/* <Rect
+              <Rect
                 x="0"
-                y="0"
+                y={this.state.xActive ? '400' - deviceHeight * scaledAngles.beta : '400'}
                 width="400"
-                height={this.state.axisSelect === 'Y' ? '0' : deviceHeight * betaScaled}
+                height="400"
                 fill="white"
-                fillOpacity="0.2"
                 mask="url(#Mask)"
-              /> */}
+              />
             </G>
 
             <G
@@ -236,12 +236,6 @@ function scaleAngles(data) {
     }
     else if (data['gamma'] >=  maxAngles['gamma'] && data['gamma'] <= minAngles['gamma'] && minAngles['gamma'] > maxAngles['gamma']) {
       scaledAngles['gamma'] = Math.abs(data['gamma'] - minAngles['gamma']) / Math.abs(maxAngles['gamma'] - minAngles['gamma']);
-    }
-    if (data['alpha'] >=  minAngles['alpha'] && data['alpha'] <= maxAngles['alpha'] && maxAngles['alpha'] > minAngles['alpha']) {
-      scaledAngles['alpha'] = Math.abs(data['alpha'] - minAngles['alpha']) / Math.abs(maxAngles['alpha'] - minAngles['alpha']);
-    }
-    else if (data['alpha'] >=  maxAngles['alpha'] && data['alpha'] <= minAngles['alpha'] && minAngles['alpha'] > maxAngles['alpha']) {
-      scaledAngles['alpha'] = Math.abs(data['alpha'] - minAngles['alpha']) / Math.abs(maxAngles['alpha'] - minAngles['alpha']);
     }
   }
 
