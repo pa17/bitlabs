@@ -1,11 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions, Image } from 'react-native';
 
 import { DangerZone, Svg } from 'expo';
 const { DeviceMotion } = DangerZone;
 const { Circle, Rect, G, Mask } = Svg;
-
-// TODO: Performance issues: FPS significantly reduced since adding of tilt indication rectangles and masking
 
 let smallRadius = 57;
 let bigRadius = 200;
@@ -26,7 +24,7 @@ export default class DeviceMotionSensor extends React.Component {
     effectSelect: [false, false, false, false, false, false, false, false, false, false],
     effectToggle: false,
     xActive: false,
-    yActive: false
+    yActive: false,
   };
 
   _selectEffect = (index) => {
@@ -127,15 +125,10 @@ export default class DeviceMotionSensor extends React.Component {
               <Text>Max</Text>
             </TouchableOpacity>
           </View>
-
-          {/* BITLABS LOGO
-          <View style={styles.logoContainer}>
-            <Image source={require('./img/logo.png')} />
-          </View> */}
-
         </View>
+
         <Svg
-          height="100%"
+          height="65%"
           width="100%"
         >
 
@@ -150,7 +143,7 @@ export default class DeviceMotionSensor extends React.Component {
 
           {/* MASKING A RECT EAT LOADS OF PERFORMANCE */}
           <Mask id="Mask" maskUnits="userSpaceOnUse" width="400" height="400">
-            <Circle cx="162" cy="185" r='150' fill='slategray'/>
+            <Circle cx="160" cy="189" r='150' fill='slategray'/>
           </Mask>
 
           <G
@@ -167,7 +160,7 @@ export default class DeviceMotionSensor extends React.Component {
 
               <Rect
                 x="0"
-                y={this.state.xActive ? '400' - deviceHeight * scaledAngles.beta : '400'}
+                y={this.state.xActive ? '370' - '370' * scaledAngles.beta : '400'}
                 width="400"
                 height="400"
                 fill="white"
@@ -178,45 +171,50 @@ export default class DeviceMotionSensor extends React.Component {
             <G
               id="UIButtonContainer"
               scale="0.3"
-              transform="translate(125,200)"
+              transform="translate(115,200)"
             >
-              <Circle cx="407.47" cy="57.08" r={smallRadius}
+              <Circle cx="416" cy="57" r={smallRadius}
                 fill={this.state.effectSelect[0] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(0)}/>
-              <Circle cx="188.68" cy="134.35" r={smallRadius}
+              <Circle cx="195.5" cy="129.2" r={smallRadius}
                 fill={this.state.effectSelect[1] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(1)}/>
-              <Circle cx="57.09" cy="325.47" r={smallRadius}
+              <Circle cx="59.6" cy="317.3" r={smallRadius}
                 fill={this.state.effectSelect[2] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(2)}/>
-              <Circle cx="62.97" cy="557.43" r={smallRadius}
+              <Circle cx="60.2" cy="549.4" r={smallRadius}
                 fill={this.state.effectSelect[3] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(3)}/>
-              <Circle cx="204.07" cy="741.64" r={smallRadius}
+              <Circle cx="197.1" cy="736.7" r={smallRadius}
                 fill={this.state.effectSelect[4] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(4)}/>
-              <Circle cx="426.5" cy="807.73" r={smallRadius}
+              <Circle cx="418" cy="807.8" r={smallRadius}
                 fill={this.state.effectSelect[5] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(5)}/>
-              <Circle cx="645.29" cy="730.45" r={smallRadius}
+              <Circle cx="638.5" cy="735.6" r={smallRadius}
                 fill={this.state.effectSelect[6] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(6)}/>
-              <Circle cx="776.88" cy="539.34" r={smallRadius}
+              <Circle cx="774.4" cy="547.5" r={smallRadius}
                 fill={this.state.effectSelect[7] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(7)}/>
-              <Circle cx="771" cy="307.37" r={smallRadius}
+              <Circle cx="773.7" cy="315.4" r={smallRadius}
                 fill={this.state.effectSelect[8] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(8)}/>
-              <Circle cx="629.9" cy="123.17" r={smallRadius}
+              <Circle cx="636.9" cy="128.1" r={smallRadius}
                 fill={this.state.effectSelect[9] ? 'pink' : 'lightsteelblue'} 
                 onPress={() => this._selectEffect(9)}/>
-              <Circle cx="416.99" cy="432.4" r={bigRadius}
+              <Circle cx="417" cy="432.4" r={bigRadius}
                 fill={this.state.effectToggle ? 'salmon' : 'seashell'} 
                 onPress={() => this._toggleEffect()}
                 onLongPress={() => alert('Long press on Rect')}
               />
             </G>
         </Svg>
+
+        <View style={styles.logoContainer}>
+            <Image source={require('./img/logo.png')} style={{width: 40, height: 60}} />
+        </View>
+
       </View>
     );
   }
@@ -279,9 +277,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logoContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 50,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginLeft: 20,
   },
   middleButton: {
     borderLeftWidth: 1,
