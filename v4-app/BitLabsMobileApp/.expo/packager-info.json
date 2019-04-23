@@ -2,8 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 98931,
-  "expoServerNgrokUrl": "https://ve-4m4.pa17.bitlabsmobileapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.ve-4m4.pa17.bitlabsmobileapp.exp.direct",
-  "ngrokPid": 98942
+  "packagerPid": 19060,
+  "expoServerNgrokUrl": "https://ve-4m4.alexdgourlay.bitlabsmobileapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.ve-4m4.alexdgourlay.bitlabsmobileapp.exp.direct",
+  "ngrokPid": 21416
 }
