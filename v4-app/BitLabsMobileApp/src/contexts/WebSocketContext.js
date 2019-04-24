@@ -11,14 +11,14 @@ export class WebSocketManager {
 
         this.ws = new WebSocket(`ws://${ipv4}:${port}/`);
 
-        this.ws.onopen = (evt) => console.log('connected');
+        this.ws.onopen = (evt) => console.log('Connected to Server');
 
         this.ws.addEventListener('open', () => {
-            // this.ws.send(JSON.stringify('Hello!'));
+   
         });
 
         this.ws.addEventListener('message', event => {
-            console.log('Received:', event.data);
+         
         });
     }
 
@@ -26,7 +26,6 @@ export class WebSocketManager {
         console.log('Testing Socket');
         // this.ws.send('TEST');
     }
-
 }
 
 
