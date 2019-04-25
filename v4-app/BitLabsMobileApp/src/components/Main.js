@@ -6,6 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { DangerZone } from 'expo';
 const { DeviceMotion } = DangerZone;
 
+import {webSocketManager} from '../contexts/WebSocketContext';
 import { ControlWheel } from './UI/ControlWheel';
 import { ControlModeContext } from '../contexts/ControlModeContext';
 
@@ -16,7 +17,7 @@ let minAngles, maxAngles, scaledAngles = {
   gamma: 0
 }
 
-export class DeviceMotionSensor extends React.Component {
+export class Main extends React.Component {
   state = {
     axisSelect: 'X',
     deviceMotionData: {},
@@ -95,6 +96,9 @@ export class DeviceMotionSensor extends React.Component {
       scaleAngles(this.state.deviceMotionData.rotation);
     }
 
+    // Send motion data to server!
+    webSocketManager.sendMotionData(scaledAngles);
+
     return (
           <View style={styles.background}>
             <View style={styles.body}>
@@ -125,7 +129,9 @@ export class DeviceMotionSensor extends React.Component {
               <Image source={require(`${ROOT}/img/logo.png`)} style={{ width: 40, height: 60 }} />
             </View>
           </View>
+    
     );
+
   }
 }
 
