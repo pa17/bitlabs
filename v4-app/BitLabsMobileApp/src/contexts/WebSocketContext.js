@@ -3,29 +3,44 @@ import React from 'react';
 // Context to hold all socket communication.
 export const WebSocketContext = React.createContext();
 
-export class WebSocketManager {
+class WebSocketManager {
 
     constructor(ipv4, port) {
         // Default values.
         port = port || 8080;
 
+        this.connected = false;
+
         this.ws = new WebSocket(`ws://${ipv4}:${port}/`);
 
-        this.ws.onopen = (evt) => console.log('Connected to Server');
+        this.ws.onopen = (evt) => {
+            this.connected = true;
+            console.log('Connected to Server');
+        }
 
         this.ws.addEventListener('open', () => {
-   
+            this.ws.send('App Connected')
         });
 
         this.ws.addEventListener('message', event => {
-         
         });
+
+        this.ws.onclose = (evt) => {
+            this.connected = false;
+            console.log('Disconnected from Server');
+        }
     }
 
-    testSocket = () => {
+    sendMotionData(data) {
+        if (this.connected) {
+            this.ws.send(JSON.stringify(data));
+        }
+    }
+
+    testSocket() {
         console.log('Testing Socket');
-        // this.ws.send('TEST');
     }
 }
 
-
+// Create instance of WebSocketManager, to be used for all communication.
+export const webSocketManager = new WebSocketManager('146.169.158.221');
