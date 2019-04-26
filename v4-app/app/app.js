@@ -2,22 +2,17 @@
 
 // Importing npm modules.
 const
-  express = require('express'),
-  socket = require('socket.io'),
   os = require('os'),
   fs = require('fs'),
   path = require('path'),
   max = require('max-api'),
-  ws = require('ws');
+  WebSocket = require('ws');
 
 //
 //  SETUP
 //
 
-// Reading settings.json.
-var settings = fs.readFileSync('./public/settings.json');
-settings = JSON.parse(settings);
-var port = settings.port;
+var port = 8080;
 var ip_v4 = ''
 
 // Acquiring local wlan-ipv4 address.
@@ -48,15 +43,17 @@ Object.keys(ifaces).forEach(function (ifname) {
 max.post(`IP address identified: ` + ip_v4);
 max.outlet(ip_v4 + ':' + port);
 
-// Writing local wlan-ipv4 address to settings.json.
-settings.wlan_ip = ip_v4;
-
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: port });
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
-    max.post(message);
+    
+    // var json = JSON.parse(message.slice(1, length(message)));
+    var jsonString = JSON.stringify({test : "test"});
+    // max.post(message);
+    var json = JSON.parse(jsonString);
+    // var data = message["data"];
+    max.post(json['test']);
+    // max.post(typeof(message));
   });
 });
-
-
