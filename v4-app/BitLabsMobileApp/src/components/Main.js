@@ -8,8 +8,6 @@ const { DeviceMotion } = DangerZone;
 
 import {webSocketManager} from '../contexts/WebSocketContext';
 import { ControlWheel } from './UI/ControlWheel';
-import { ControlModeContext } from '../contexts/ControlModeContext';
-
 
 let minAngles, maxAngles, scaledAngles = {
   alpha: 0,
@@ -20,30 +18,12 @@ let minAngles, maxAngles, scaledAngles = {
 export class Main extends React.Component {
   state = {
     axisSelect: 'X',
+    effectAmount: 0,
     deviceMotionData: {},
-    effectToggle: false,
-    xActive: false,
-    yActive: false,
   };
 
-  _toggleEffect = () => {
-    // TODO: Implement functionality of effect toggling -> Show the angles achieved, get ready to be sent
-    // console.log("Axis Select: " + this.state.axisSelect + ", Effect Toggle: " + this.state.effectToggle);
-    if (this.state.axisSelect === 'X' && !this.state.effectToggle) {
-      this.setState({ xActive: true, yActive: false })
-    }
-    else if (this.state.axisSelect === 'Y' && !this.state.effectToggle) {
-      this.setState({ xActive: false, yActive: true })
-    }
-    else {
-      this.setState({ xActive: false, yActive: false })
-    }
-
-    this.setState({ effectToggle: !this.state.effectToggle });
-  }
-
   componentDidMount() {
-    this._toggle();
+    this._subscribe();
     DeviceMotion.setUpdateInterval(50);
   }
 
@@ -51,20 +31,12 @@ export class Main extends React.Component {
     this._unsubscribe();
   }
 
-  _toggle = () => {
-    if (this._subscription) {
-      this._unsubscribe();
-    } else {
-      this._subscribe();
-    }
-  };
-
   _selectAxis = () => {
     if (this.state.axisSelect === 'X') {
-      this.setState({ axisSelect: 'Y' });
+      this.setState({ axisSelect: 'Y'});
     }
     else {
-      this.setState({ axisSelect: 'X' });
+      this.setState({ axisSelect: 'X'});
     }
   }
 
@@ -92,13 +64,20 @@ export class Main extends React.Component {
   };
 
   render() {
+    // console.log("X: " + this.state.xActive + " Y: " + this.state.yActive);
     if (this.state.deviceMotionData.rotation != null) {
       scaleAngles(this.state.deviceMotionData.rotation);
     }
 
+    if (this.state.axisSelect === 'X') {
+      this.state.effectAmount = scaledAngles.beta;
+    }
+    else if (this.state.axisSelect === 'Y') {
+      this.state.effectAmount = scaledAngles.gamma;
+    }
+  
     // Send motion data to server!
     webSocketManager.sendMotionData(scaledAngles);
-
     return (
           <View style={styles.background}>
             <View style={styles.body}>
@@ -123,7 +102,7 @@ export class Main extends React.Component {
               </View>
             </View>
 
-            <ControlWheel />
+            <ControlWheel effectAmount={this.state.effectAmount}/>
 
             <View style={styles.logoContainer}>
               <Image source={require(`${ROOT}/img/logo.png`)} style={{ width: 40, height: 60 }} />
