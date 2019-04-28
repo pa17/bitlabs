@@ -29,18 +29,18 @@ Object.keys(ifaces).forEach(function (ifname) {
 
     if (alias >= 1) {
       // this single interface has multiple ipv4 addresses
-      console.log(ifname + ':' + alias, iface.address);
+      // console.log(ifname + ':' + alias, iface.address);
       ip_v4 = iface.address
     } else {
       // this interface has only one ipv4 adress
-      console.log(ifname, iface.address);
+      // console.log(ifname, iface.address);
       ip_v4 = iface.address
     }
     ++alias;
   });
 });
 
-max.post(`IP address identified: ` + ip_v4);
+// max.post(`IP address identified: ` + ip_v4);
 max.outlet(ip_v4 + ':' + port);
 
 const wss = new WebSocket.Server({ port: port });
@@ -48,12 +48,13 @@ const wss = new WebSocket.Server({ port: port });
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     
-    // var json = JSON.parse(message.slice(1, length(message)));
-    var jsonString = JSON.stringify({test : "test"});
-    // max.post(message);
-    var json = JSON.parse(jsonString);
-    // var data = message["data"];
-    max.post(json['test']);
-    // max.post(typeof(message));
+
+    var json = JSON.parse(JSON.stringify(message));
+    var data = json["test"];
+    // max.post(data);
+    console.log(data);
+
   });
+
+  max.post('Server On')
 });
