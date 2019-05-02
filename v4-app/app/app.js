@@ -41,11 +41,19 @@ Object.keys(ifaces).forEach(function (ifname) {
 });
 
 // max.post(`IP address identified: ` + ip_v4);
-max.outlet(ip_v4 + ':' + port);
+// max.outlet(ip_v4 + ':' + port);
+
+var clientConnected = 0;
+var motionData = { alpha: 0, beta: 0, gamma: 0 };
+var buttonActive = 0;
+
 
 const wss = new WebSocket.Server({ port: port });
 
 wss.on('connection', function connection(ws) {
+
+  clientConnected = 1;
+
   ws.on('message', function incoming(message) {
 
     if (isJson(message)) {
@@ -56,7 +64,11 @@ wss.on('connection', function connection(ws) {
       switch (Object.keys(json)[0]) {
 
         case 'data':
-          postMostionData(json['data']);
+          motionData = json['data'];
+          break;
+
+        case 'buttonsActive':
+          buttonActive = json['buttonsActive'];
           break;
 
         default:
@@ -67,10 +79,15 @@ wss.on('connection', function connection(ws) {
   max.post('Client Connected!')
 });
 
-
-function postMostionData(json) {
-  max.outlet(json['alpha'], json['beta'], json['gamma']);
+function sendOut() {
+  max.outlet(
+    clientConnected,
+    motionData['alpha'],
+    motionData['beta'],
+    motionData['gamma'],
+    buttonActive);
 }
+setInterval(sendOut, 10);
 
 // Check if a string is in JSON format.
 function isJson(str) {
@@ -81,3 +98,4 @@ function isJson(str) {
   }
   return true;
 }
+

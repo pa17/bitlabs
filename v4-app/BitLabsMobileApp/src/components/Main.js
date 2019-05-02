@@ -78,6 +78,7 @@ export class Main extends React.Component {
   
     // Send motion data to server!
     webSocketManager.sendMotionData(scaledAngles);
+
     return (
           <View style={styles.background}>
             <View style={styles.body}>

@@ -6,12 +6,18 @@ export const WebSocketContext = React.createContext();
 class WebSocketManager {
 
     constructor(ipv4, port) {
+        this.ipv4 = ipv4;
+
         // Default values.
-        port = port || 8080;
+        this.port = port || 8080;
 
         this.connected = false;
 
-        this.ws = new WebSocket(`ws://${ipv4}:${port}/`);
+        this.initialise();
+    }
+
+    initialise() {
+        this.ws = new WebSocket(`ws://${this.ipv4}:${this.port}/`);
 
         this.ws.onopen = (evt) => {
             this.connected = true;
@@ -31,8 +37,15 @@ class WebSocketManager {
     }
 
     sendMotionData(data) {
-        var msg = {data:data};
         if (this.connected) {
+            var msg = { data: data };
+            this.ws.send(JSON.stringify(msg));
+        }
+    }
+
+    sendButtonsActive(index) {
+        if (this.connected) {
+            var msg = { buttonsActive: index }
             this.ws.send(JSON.stringify(msg));
         }
     }

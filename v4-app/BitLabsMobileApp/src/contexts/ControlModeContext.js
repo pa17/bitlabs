@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import {webSocketManager} from './WebSocketContext';
 
 // Context to hold all socket communication.
 export const ControlModeContext = React.createContext();
@@ -15,6 +16,8 @@ class _EffectSelection {
     handleButtonPress(index)  {
         this.buttonsActive = [false, false, false, false, false, false, false, false, false];
         this.buttonsActive[index] = true;
+
+        webSocketManager.sendButtonsActive(index);
     }
 
     getButtonsActive(index) {
