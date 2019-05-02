@@ -10,6 +10,8 @@ const
 //  SETUP
 //
 
+max.post('Running node script app.js');
+
 var port = 8080;
 var ip_v4 = ''
 
