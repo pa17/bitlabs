@@ -19,7 +19,6 @@ class WebSocketManager {
         }
 
         this.ws.addEventListener('open', () => {
-            this.ws.send('App Connected')
         });
 
         this.ws.addEventListener('message', event => {
@@ -32,8 +31,9 @@ class WebSocketManager {
     }
 
     sendMotionData(data) {
+        var msg = {data:data};
         if (this.connected) {
-            this.ws.send(JSON.stringify(data));
+            this.ws.send(JSON.stringify(msg));
         }
     }
 
@@ -43,4 +43,4 @@ class WebSocketManager {
 }
 
 // Create instance of WebSocketManager, to be used for all communication.
-export const webSocketManager = new WebSocketManager('146.169.158.221');
+export const webSocketManager = new WebSocketManager('146.169.146.91');

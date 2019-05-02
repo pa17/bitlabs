@@ -1,5 +1,3 @@
-'use strict';
-
 // Importing npm modules.
 const
   os = require('os'),
@@ -47,14 +45,37 @@ const wss = new WebSocket.Server({ port: port });
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
-    
 
-    var json = JSON.parse(JSON.stringify(message));
-    var data = json["test"];
-    // max.post(data);
-    console.log(data);
+    if (isJson(message)) {
 
+      var json = JSON.parse(message)
+
+      // Choose how to process the JSON based on the first top level key.
+      switch (Object.keys(json)[0]) {
+
+        case 'data':
+          postMostionData(json['data']);
+          break;
+
+        default:
+          max.post('Unknown JSON message received');
+      }
+    }
   });
-
-  max.post('Server On')
+  max.post('Client Connected!')
 });
+
+
+function postMostionData(json) {
+  max.outlet(json['alpha'], json['beta'], json['gamma']);
+}
+
+// Check if a string is in JSON format.
+function isJson(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
