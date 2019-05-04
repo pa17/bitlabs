@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import {webSocketManager} from './WebSocketContext';
+import { webSocketManager } from './WebSocketContext';
 
 // Context to hold all socket communication.
 export const ControlModeContext = React.createContext();
@@ -31,19 +31,8 @@ class _EffectSelection {
         } 
     }
 
-    getToggleActive() {
-        if (this.toggleActive)
-        { 
-            return styles.toggleSelected.fill;
-        }
-        else 
-        {
-            return styles.toggleUnselected.fill 
-        } 
-    }
-
-    updateEffectAmount(effectAmount) {
-        return styles.outsideCircle.fill;
+    updateEffectAmount() {
+        return styles.toggleButton.fill;
     }
 }
 
@@ -53,36 +42,54 @@ class _EffectControl {
         this.id = "EffectControl",
         this.buttonsActive = [false, false, false, false, false, false, false, false];
         this.toggleActive = true;
-        this.effectAmount = 0;
+        this.effectAmountX = 0;
+        this.effectAmountY = 0;
+        this.axisSelect = '';
     }
   
     handleButtonPress(index)  {} // UNUSED IN THIS MODE
 
-    // GET METHODS
     getButtonsActive(index) {
-        if (this.effectAmount >= (index + 1 ) * (1 / 12) - (1 / 24)) {
-            return styles.smallEffectActive.fill;
+        if (index === 0) {
+            return styles.controlModeActive.fill;
         }
-        else {
-            return styles.smallEffectInactive.fill;
+        switch (this.axisSelect) {
+            case 'X':
+                if (this.effectAmountX >= (index / 11) - (1 / 22)) {
+                    return styles.smallEffectActive.fill;
+                }
+                else {
+                    return styles.smallEffectInactive.fill;
+                }
+            case 'Y':
+                if (this.effectAmountY >= (index / 11) - (1 / 22)) {
+                    return styles.smallEffectActive.fill;
+                }
+                else {
+                    return styles.smallEffectInactive.fill;
+                }
+            case 'X & Y':
+                if (index === 6) {
+                    return styles.controlModeActive.fill;
+                }
+                else if ((this.effectAmountX) >= (2*index / 11) - (1 / 22)) {
+                    return styles.smallEffectActive.fill;
+                }
+                else if ((this.effectAmountY) >= (2*(-index + 12) / 11)  - (1 / 22)) {
+                    return styles.smallEffectActive.fill;
+                }
+                else {
+                    return styles.smallEffectInactive.fill;
+                }
         }
     }
 
-    getToggleActive(effectAmount) {
-        if (this.toggleActive)
-        { 
-            return styles.toggleSelected.fill;
-        }
-        else 
-        {
-            return styles.toggleUnselected.fill 
-        } 
-    }
+    updateEffectAmount(effectAmountX, effectAmountY, axisSelect) {
+        this.effectAmountX = effectAmountX;
+        this.effectAmountY = effectAmountY;
+        this.axisSelect = axisSelect;
 
-    updateEffectAmount(effectAmount) {
-        this.effectAmount = effectAmount;
-
-        return styles.outsideCircle.fill;
+        return styles.toggleButton.fill;
     }
 }
 
@@ -90,9 +97,8 @@ export let EffectSelection = new _EffectSelection();
 export let EffectControl = new _EffectControl();
 
 const styles = StyleSheet.create({
-
-    outsideCircle : {
-        fill : 'slategray'
+    controlModeActive : {
+        fill: 'orange'
     },
 
     smallSelected : {
@@ -111,11 +117,7 @@ const styles = StyleSheet.create({
         fill: 'grey'
     },
 
-    toggleSelected : {
-        fill : 'salmon',
-      },
-    
-    toggleUnselected : {
-        fill : 'white'
+    toggleButton: {
+        fill: 'transparent'
     },
 });

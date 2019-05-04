@@ -1,17 +1,14 @@
 import React from 'react';
-import { StyleSheet, Dimensions} from 'react-native';
 import { Svg } from 'expo';
 
 import { ControlModeContext } from '../../contexts/ControlModeContext';
 
-const { Circle, Rect, G, Mask } = Svg;
+const { Image, Circle, G } = Svg;
 
 let selectButtonRadius = 20;
 let toggleButtonRadius = 70;
 let outsideRadius = 150;
-let buttonOffset = 40;
-
-let deviceWidth = Dimensions.get('window').width;
+let buttonOffset = 48;
 
 export class ControlWheel extends React.Component {
 
@@ -28,6 +25,8 @@ export class ControlWheel extends React.Component {
   }
 
   render() {
+    // TODO: outsideRadius circle is currently used to pass effectAmount into contextProvider which decides
+    // what happens to the buttons in EffectControl mode. Hacky...
     return (
       < Svg
         height="65%"
@@ -39,11 +38,17 @@ export class ControlWheel extends React.Component {
             <G
               id="UI"
             >
-              <Circle cx={this.centerX} cy={this.centerY} r={outsideRadius}
-               fill={mode.updateEffectAmount(this.props.effectAmount)} />
+              <Image
+                y="5"
+                x="8"
+                width="95%"
+                height="100%"
+                opacity="1"
+                href={require('../img/proto.png')}
+              />
 
               <Circle cx={this.centerX} cy={this.centerY} r={toggleButtonRadius}
-                fill = {mode.getToggleActive()}
+                fill = {mode.updateEffectAmount(this.props.effectAmountX, this.props.effectAmountY, this.props.axisSelect)}
                 onPress={() => switchControlMode()}
               />
 
