@@ -70,9 +70,11 @@ export class Main extends React.Component {
     }
 
     if (this.state.axisSelect === 'X') {
+      webSocketManager.sendAxisSelected('beta');
       this.state.effectAmount = scaledAngles.beta;
     }
     else if (this.state.axisSelect === 'Y') {
+      webSocketManager.sendAxisSelected('gamma')
       this.state.effectAmount = scaledAngles.gamma;
     }
   

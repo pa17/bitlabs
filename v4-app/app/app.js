@@ -46,6 +46,8 @@ Object.keys(ifaces).forEach(function (ifname) {
 var clientConnected = 0;
 var motionData = { alpha: 0, beta: 0, gamma: 0 };
 var buttonActive = 0;
+var controlling = false;
+var axisSelected = '';
 
 
 const wss = new WebSocket.Server({ port: port });
@@ -64,11 +66,30 @@ wss.on('connection', function connection(ws) {
       switch (Object.keys(json)[0]) {
 
         case 'data':
-          motionData = json['data'];
+          if (controlling) {
+            motionData = json['data'];
+          } else {
+            motionData = { alpha: 0, beta: 0, gamma: 0 };
+          }
           break;
 
         case 'buttonsActive':
           buttonActive = json['buttonsActive'];
+          break;
+
+        case 'axisSelected':
+          axisSelected = json['axisSelected'];
+          max.post(json['axisSelected']);
+          break;
+
+        case 'controlMode':
+          var controlMode = json['controlMode'];
+
+          if (controlMode == 'effectControl') {
+            controlling = true;
+          } else {
+            controlling = false;
+          }
           break;
 
         default:
@@ -79,7 +100,8 @@ wss.on('connection', function connection(ws) {
   max.post('Client Connected!')
 });
 
-function sendOut() {
+// Send all axes.
+function sendAll() {
   max.outlet(
     clientConnected,
     motionData['alpha'],
@@ -87,7 +109,21 @@ function sendOut() {
     motionData['gamma'],
     buttonActive);
 }
-setInterval(sendOut, 10);
+
+// Send only the selected axis.
+function sendOne() {
+  var _motionData = motionData[axisSelected];
+
+  max.outlet(
+    clientConnected,
+    _motionData,
+    _motionData,
+    _motionData,
+    buttonActive);
+}
+
+// SetInterval
+setInterval(sendAll, 5);
 
 // Check if a string is in JSON format.
 function isJson(str) {

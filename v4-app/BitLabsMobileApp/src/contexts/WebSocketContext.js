@@ -50,6 +50,20 @@ class WebSocketManager {
         }
     }
 
+    sendControlMode(mode) {
+        if (this.connected) {
+            var msg = { controlMode : mode};
+            this.ws.send(JSON.stringify(msg));
+        }
+    }
+
+    sendAxisSelected(axis) {
+        if(this.connected) {
+            var msg = {axisSelected : axis};
+            this.ws.send(JSON.stringify(msg));
+        }
+    }
+
     testSocket() {
         console.log('Testing Socket');
     }
