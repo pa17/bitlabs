@@ -6,7 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { DangerZone } from 'expo';
 const { DeviceMotion } = DangerZone;
 
-import {webSocketManager} from '../contexts/WebSocketContext';
+import { webSocketManager } from '../contexts/WebSocketContext';
 import { ControlWheel } from './UI/ControlWheel';
 
 let minAngles, maxAngles, scaledAngles = {
@@ -18,7 +18,8 @@ let minAngles, maxAngles, scaledAngles = {
 export class Main extends React.Component {
   state = {
     axisSelect: 'X',
-    effectAmount: 0,
+    effectAmountX: 0,
+    effectAmountY: 0,
     deviceMotionData: {},
   };
 
@@ -32,22 +33,25 @@ export class Main extends React.Component {
   }
 
   _selectAxis = () => {
-    if (this.state.axisSelect === 'X') {
-      this.setState({ axisSelect: 'Y'});
-    }
-    else {
-      this.setState({ axisSelect: 'X'});
+    switch (this.state.axisSelect) {
+      case 'X':
+        this.setState({ axisSelect: 'Y' });
+        break;
+      case 'Y':
+        this.setState({ axisSelect: 'X & Y' });
+        break;
+      case 'X & Y':
+        this.setState({ axisSelect: 'X' });
+        break;
     }
   }
 
   _min = () => {
     minAngles = this.state.deviceMotionData.rotation;
-    // console.log("New Min Angles: " + minAngles);
   };
 
   _max = () => {
     maxAngles = this.state.deviceMotionData.rotation;
-    // console.log("New Max Angles: " maxAngles);
   };
 
   _subscribe = () => {
@@ -64,54 +68,64 @@ export class Main extends React.Component {
   };
 
   render() {
-    // console.log("X: " + this.state.xActive + " Y: " + this.state.yActive);
     if (this.state.deviceMotionData.rotation != null) {
       scaleAngles(this.state.deviceMotionData.rotation);
     }
 
-    if (this.state.axisSelect === 'X') {
-      webSocketManager.sendAxisSelected('beta');
-      this.state.effectAmount = scaledAngles.beta;
+
+    switch (this.state.axisSelect) {
+      case 'X':
+        webSocketManager.sendAxisSelected('beta');
+        this.state.effectAmountX = scaledAngles.beta;
+        this.state.effectAmountY = 0;
+        break;
+      case 'Y':
+        webSocketManager.sendAxisSelected('gamma')
+        this.state.effectAmountY = scaledAngles.gamma;
+        this.state.effectAmountX = 0;
+        break;
+      case 'X & Y':
+        webSocketManager.sendAxisSelected('both')
+        this.state.effectAmountX = scaledAngles.beta;
+        this.state.effectAmountY = scaledAngles.gamma;
+        break;
     }
-    else if (this.state.axisSelect === 'Y') {
-      webSocketManager.sendAxisSelected('gamma')
-      this.state.effectAmount = scaledAngles.gamma;
-    }
-  
+
     // Send motion data to server!
     webSocketManager.sendMotionData(scaledAngles);
 
     return (
-          <View style={styles.background}>
-            <View style={styles.body}>
-              <Text style={styles.text}>Device Motion:</Text>
-              <Text style={styles.text}>
-                Alpha: {toDeg(scaledAngles.alpha)} Beta: {toDeg(scaledAngles.beta)} Gamma: {toDeg(scaledAngles.gamma)}
-              </Text>
-              {/* <Text style={styles.text}>
+      <View style={styles.background}>
+        <View style={styles.body}>
+          <Text style={styles.title}>OrBit by BitLabs</Text>
+          <Text style={styles.text}>
             S.Alpha: {toTwoDec(scaledAngles.alpha)} S.Beta: {toTwoDec(scaledAngles.beta)} S.Gamma: {toTwoDec(scaledAngles.gamma)}
-          </Text> */}
+          </Text>
 
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={this._selectAxis} style={styles.button}>
-                  <Text>{this.state.axisSelect}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this._min} style={[styles.button, styles.middleButton]}>
-                  <Text>Min</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this._max} style={styles.button}>
-                  <Text>Max</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <ControlWheel effectAmount={this.state.effectAmount}/>
-
-            <View style={styles.logoContainer}>
-              <Image source={require(`${ROOT}/img/logo.png`)} style={{ width: 40, height: 60 }} />
-            </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={this._selectAxis} style={styles.button}>
+              <Text>{this.state.axisSelect}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._min} style={[styles.button, styles.middleButton]}>
+              <Text>Min</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._max} style={styles.button}>
+              <Text>Max</Text>
+            </TouchableOpacity>
           </View>
-    
+        </View>
+
+        <ControlWheel
+          axisSelect={this.state.axisSelect}
+          effectAmountX={this.state.effectAmountX}
+          effectAmountY={this.state.effectAmountY}
+        />
+
+        <View style={styles.logoContainer}>
+          <Image source={require(`${ROOT}/img/logo.png`)} style={{ width: 40, height: 60 }} />
+        </View>
+      </View>
+
     );
 
   }
@@ -135,14 +149,6 @@ function scaleAngles(data) {
   }
 
   return scaledAngles;
-}
-
-function toDeg(n) {
-  if (!n) {
-    return 0;
-  }
-
-  return Math.floor(n * 180.0 / Math.PI);
 }
 
 function toTwoDec(n) {
@@ -182,6 +188,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderColor: '#ccc',
+  },
+  title: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold'
   },
   text: {
     color: 'white',

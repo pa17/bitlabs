@@ -29,8 +29,7 @@ export default class App extends Component {
 
   render() {
     return (
-    // Make sure to pass whole state to ControlModeContext.Provider so that it contains the functions too
-    <ControlModeContext.Provider value={this.state}> 
+      <ControlModeContext.Provider value={this.state}> 
         <WebSocketContext.Provider value={{ wsm: webSocketManager }}>
           <Main />
         </WebSocketContext.Provider>
