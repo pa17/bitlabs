@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     },
   
     smallUnselected : {
-      fill : 'lightsteelblue'
+      fill : 'grey'
     },
 
     smallEffectActive: {

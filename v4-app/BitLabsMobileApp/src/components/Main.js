@@ -111,14 +111,14 @@ export class Main extends React.Component {
     </Text> */}
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={this._selectAxis} style={styles.button}>
-              <Text>{this.state.axisSelect}</Text>
+            <TouchableOpacity onPress={this._selectAxis} style={[styles.button, styles.leftButton]}>
+              <Text style={styles.text}>{this.state.axisSelect}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={this._min} style={[styles.button, styles.middleButton]}>
-              <Text>Min</Text>
+              <Text style={styles.text}>Min</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this._max} style={styles.button}>
-              <Text>Max</Text>
+            <TouchableOpacity onPress={this._max} style={[styles.button, styles.rightButton]}>
+              <Text style={styles.text}>Max</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -157,42 +157,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'stretch',
-    marginTop: 60,
   },
+
   background: {
     flex: 1,
     backgroundColor: '#38424a',
   },
+
   body: {
-    marginTop: 35,
     paddingHorizontal: 10,
   },
+
   button: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#48424a',
     padding: 10,
   },
-  logoContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginLeft: 20,
+
+  leftButton: {
+    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 10,
   },
+
   middleButton: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: '#ccc',
+    borderColor: 'slategray',
   },
-  title: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold'
+
+  rightButton: {
+    borderBottomRightRadius: 10,
+    borderTopRightRadius: 10,
   },
+
   text: {
     color: 'white',
-  }
+  },
 });
