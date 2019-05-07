@@ -44,7 +44,7 @@ export class ControlWheel extends React.Component {
                 width="95%"
                 height="100%"
                 opacity="1"
-                href={require('../img/proto.png')}
+                href={require('../img/protologo.png')}
               />
 
               <Circle cx={this.centerX} cy={this.centerY} r={toggleButtonRadius}

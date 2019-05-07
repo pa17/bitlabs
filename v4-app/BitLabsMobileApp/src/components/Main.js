@@ -96,11 +96,19 @@ export class Main extends React.Component {
 
     return (
       <View style={styles.background}>
+
+
+        <ControlWheel
+          axisSelect={this.state.axisSelect}
+          effectAmountX={this.state.effectAmountX}
+          effectAmountY={this.state.effectAmountY}
+        />
+
         <View style={styles.body}>
-          <Text style={styles.title}>OrBit by BitLabs</Text>
+          {/* <Text style={styles.title}>OrBit by BitLabs</Text>
           <Text style={styles.text}>
             S.Alpha: {toTwoDec(scaledAngles.alpha)} S.Beta: {toTwoDec(scaledAngles.beta)} S.Gamma: {toTwoDec(scaledAngles.gamma)}
-          </Text>
+    </Text> */}
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={this._selectAxis} style={styles.button}>
@@ -113,16 +121,6 @@ export class Main extends React.Component {
               <Text>Max</Text>
             </TouchableOpacity>
           </View>
-        </View>
-
-        <ControlWheel
-          axisSelect={this.state.axisSelect}
-          effectAmountX={this.state.effectAmountX}
-          effectAmountY={this.state.effectAmountY}
-        />
-
-        <View style={styles.logoContainer}>
-          <Image source={require(`${ROOT}/img/logo.png`)} style={{ width: 40, height: 60 }} />
         </View>
       </View>
 
@@ -162,7 +160,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'stretch',
-    marginTop: 15,
+    marginTop: 60,
   },
   background: {
     flex: 1,
