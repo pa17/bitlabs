@@ -10,3 +10,6 @@ Display raibow colours and moving pixels in a pattern
 Using the input from rotary encoder to control the posotion of a single dot on the ring
 
 note: this code is still buggy for the 12th LED, needs to be debugged
+
+## dry_wet
+Controlling effects. Bug fixed
