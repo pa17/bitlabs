@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
 
   background: {
     flex: 1,
-    backgroundColor: '#38424a',
+    backgroundColor: 'silver',
   },
 
   body: {
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#48424a',
+    backgroundColor: 'darkgray',
     padding: 10,
   },
 
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   middleButton: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: 'slategray',
+    borderColor: 'gray',
   },
 
   rightButton: {
@@ -197,6 +197,6 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: 'white',
+    color: 'black',
   },
 });

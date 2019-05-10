@@ -8,10 +8,11 @@ const { Image, Circle, G } = Svg;
 const screenWidth = Math.round(Dimensions.get('window').width)
 const screenHeight = Math.round(Dimensions.get('window').height)
 
-let selectButtonRadius = screenWidth / 17;
+let selectButtonRadius = screenWidth / 16;
 let toggleButtonRadius = screenWidth / 5;
-let outsideRadius = screenWidth / 2.25;
+let outsideRadius = screenWidth / 2.315;
 let buttonOffset = screenWidth / 7.81;
+let buttonFillOpacity = 0.5;
 
 export class ControlWheel extends React.Component {
 
@@ -43,12 +44,12 @@ export class ControlWheel extends React.Component {
               id="UI"
             >
               <Image
-                y={3.6 * screenHeight / 100}
-                x={2.5 * screenWidth / 100}
+                y={3.7 * screenHeight / 100}
+                x={2.7 * screenWidth / 100}
                 width="95%"
                 height="100%"
                 opacity="1"
-                href={require('../img/protologo.png')}
+                href={require('../img/orbit.png')}
               />
 
               <Circle cx={this.centerX} cy={this.centerY} r={toggleButtonRadius}
@@ -57,51 +58,51 @@ export class ControlWheel extends React.Component {
               />
 
               <Circle cx={this.cx[0]} cy={this.cy[0]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(0)}
+                fill = {mode.getButtonsActive(0)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(0)}
               />
               <Circle cx={this.cx[1]} cy={this.cy[1]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(1)}
+                fill = {mode.getButtonsActive(1)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(1)}
               />
               <Circle cx={this.cx[2]} cy={this.cy[2]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(2)}
+                fill = {mode.getButtonsActive(2)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(2)}
               />
               <Circle cx={this.cx[3]} cy={this.cy[3]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(3)}
+                fill = {mode.getButtonsActive(3)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(3)}
               />
               <Circle cx={this.cx[4]} cy={this.cy[4]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(4)}
+                fill = {mode.getButtonsActive(4)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(4)}
               />
               <Circle cx={this.cx[5]} cy={this.cy[5]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(5)}
+                fill = {mode.getButtonsActive(5)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(5)}
               />
               <Circle cx={this.cx[6]} cy={this.cy[6]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(6)}
+                fill = {mode.getButtonsActive(6)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(6)}
               />
               <Circle cx={this.cx[7]} cy={this.cy[7]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(7)}
+                fill = {mode.getButtonsActive(7)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(7)}
               />
               <Circle cx={this.cx[8]} cy={this.cy[8]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(8)}
+                fill = {mode.getButtonsActive(8)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(8)}
               />
               <Circle cx={this.cx[9]} cy={this.cy[9]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(9)}
+                fill = {mode.getButtonsActive(9)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(9)}
               />
               <Circle cx={this.cx[10]} cy={this.cy[10]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(10)}
+                fill = {mode.getButtonsActive(10)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(10)}
               />
               <Circle cx={this.cx[11]} cy={this.cy[11]} r={selectButtonRadius}
-                fill = {mode.getButtonsActive(11)}
+                fill = {mode.getButtonsActive(11)} fillOpacity = {buttonFillOpacity}
                 onPress={() => mode.handleButtonPress(11)}
               />
             </G>

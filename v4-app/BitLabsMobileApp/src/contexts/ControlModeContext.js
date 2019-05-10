@@ -76,7 +76,7 @@ class _EffectControl {
                     return styles.smallEffectActive.fill;
                 }
                 else if ((this.effectAmountY) >= (2*(-index + 12) / 11)  - (1 / 22)) {
-                    return styles.smallEffectActive.fill;
+                    return styles.smallEffectActiveAlt.fill;
                 }
                 else {
                     return styles.smallEffectInactive.fill;
@@ -98,23 +98,27 @@ export let EffectControl = new _EffectControl();
 
 const styles = StyleSheet.create({
     controlModeActive : {
-        fill: 'orange'
+        fill: '#ffffff'
     },
 
     smallSelected : {
-      fill : 'pink',
+      fill : '#ff00ff',
     },
   
     smallUnselected : {
-      fill : 'grey'
+      fill : '#666464',
     },
 
     smallEffectActive: {
-        fill: 'white'
+        fill: '#00ffff'
+    },
+
+    smallEffectActiveAlt: {
+        fill: '#ffff00'
     },
 
     smallEffectInactive: {
-        fill: 'grey'
+        fill: '#666464'
     },
 
     toggleButton: {
