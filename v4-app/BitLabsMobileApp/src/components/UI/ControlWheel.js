@@ -44,8 +44,8 @@ export class ControlWheel extends React.Component {
               id="UI"
             >
               <Image
-                y={3.7 * screenHeight / 100}
-                x={2.7 * screenWidth / 100}
+                y={3.6 * screenHeight / 100}
+                x={2.35 * screenWidth / 100}
                 width="95%"
                 height="100%"
                 opacity="1"
