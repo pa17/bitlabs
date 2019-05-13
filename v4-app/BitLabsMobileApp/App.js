@@ -12,9 +12,11 @@ export default class App extends Component {
       
       if (this.state.mode.id === "EffectSelection") {
           this.setState({mode: EffectControl});
+          webSocketManager.sendControlMode('effectControl');
       }
       else if (this.state.mode.id === "EffectControl") {
         this.setState({mode: EffectSelection});
+        webSocketManager.sendControlMode('effectSelection');
       }
       
     };

@@ -70,4 +70,4 @@ class WebSocketManager {
 }
 
 // Create instance of WebSocketManager, to be used for all communication.
-export const webSocketManager = new WebSocketManager('146.169.181.133');
+export const webSocketManager = new WebSocketManager('192.168.0.15');
