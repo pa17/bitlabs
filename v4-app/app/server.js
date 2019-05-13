@@ -10,7 +10,7 @@ const
 //  SETUP
 //
 
-max.post('Running node script app.js');
+max.post('Running node script server.js');
 
 var port = 8080;
 var ip_v4 = ''
@@ -64,12 +64,9 @@ wss.on('connection', function connection(ws) {
 
       // Choose how to process the JSON based on the first top level key.
       switch (Object.keys(json)[0]) {
-
         case 'data':
-          if (controlling) {
+        if (controlling) {
             motionData = json['data'];
-          } else {
-            motionData = { alpha: 0, beta: 0, gamma: 0 };
           }
           break;
 
@@ -79,7 +76,7 @@ wss.on('connection', function connection(ws) {
 
         case 'axisSelected':
           axisSelected = json['axisSelected'];
-          max.post(json['axisSelected']);
+          // max.post(json['axisSelected']);
           break;
 
         case 'controlMode':
@@ -123,7 +120,7 @@ function sendOne() {
 }
 
 // SetInterval
-setInterval(sendAll, 5);
+setInterval(sendAll, 15);
 
 // Check if a string is in JSON format.
 function isJson(str) {
