@@ -2,7 +2,7 @@
 let ROOT = '../..'
 
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Alert, Linking } from 'react-native';
 import { DangerZone } from 'expo';
 const { DeviceMotion } = DangerZone;
 
@@ -21,11 +21,42 @@ export class Main extends React.Component {
     effectAmountX: 0,
     effectAmountY: 0,
     deviceMotionData: {},
+    alertShowing: false
   };
 
   componentDidMount() {
     this._subscribe();
     DeviceMotion.setUpdateInterval(50);
+
+    setInterval(() => {
+
+      if (!this.state.alertShowing) {
+        this.state.alertShowing = true;
+
+        Alert.alert(
+          'Hey There!',
+          'Enjoying the free OrBit App? You can get the full experience with our device which is now available for purchase.',
+          [
+            {
+              text: 'Show Me', onPress: () => {
+                
+                this.state.alertShowing = false;
+                Linking.openURL('http://www.bitlabs.uk/');
+              }
+            },
+            {
+              text: 'Ignore',
+              onPress: () => {
+                this.state.alertShowing = false;
+              },
+              style: 'cancel',
+            },
+
+          ],
+          { cancelable: false },
+        );
+      }
+    }, 10000);
   }
 
   componentWillUnmount() {
